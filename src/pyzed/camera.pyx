@@ -69,7 +69,7 @@ cdef class Camera:
 
         cdef sl.InitParams params
         params.mode = mode
-        params.unit = sl.UNIT_MILLIMETERS               # TODO
+        params.unit = sl.UNIT_MILLIMETER                # TODO
         params.coordinate = sl.COORDINATE_SYSTEM_IMAGE  # TODO
         params.verbose = verbose
         params.device = device
@@ -93,7 +93,7 @@ cdef class Camera:
         #        self.SVOPosition = 0
 
 
-    def grab(self, sl.SENSING_MODE mode = sl.SENSING_MODE_RAW,
+    def grab(self, sl.SENSING_MODE mode = sl.SENSING_MODE_STANDARD,
         bool computeMeasure = True, bool computeDisparity = True,
         bool computeXYZ = True):
         

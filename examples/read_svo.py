@@ -32,7 +32,7 @@ def main():
     # for i in range(0):
 
         cam.SVOPosition = i
-        cam.grab(sl.SENSING_MODE_FULL)
+        cam.grab(sl.SENSING_MODE_FILL)
         
         # images from SVO file are encoded in BGR format
         img_left = cam.retrieveImage(sl.SIDE_LEFT)
