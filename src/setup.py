@@ -16,6 +16,7 @@ import numpy as np
 
 incDirs = ['/usr/local/zed/include',
            '/usr/local/cuda/include',
+           '/usr/include/eigen3',
            np.get_include()]
 
 libDirs = ['/usr/local/zed/lib',

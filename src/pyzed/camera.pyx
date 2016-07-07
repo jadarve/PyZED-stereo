@@ -24,7 +24,9 @@ def errcodeToString(sl.ERRCODE code):
             5 : 'ZED settings file not available',
             6 : 'Invalid SVO file',
             7 : 'Recorder error',
-            8 : 'Last error code'}[code]
+            8 : 'Invalid coordinate system',
+            9 : 'ZED wrong firmware',
+            10 : 'Last error code'}[code]
 
 
 
@@ -62,10 +64,22 @@ cdef class Camera:
 
     def init(self, sl.MODE mode = sl.MODE_QUALITY, int device = -1,
         bool verbose = True, bool vflip = False,
-        bool disable_self_calib = False):
+        bool disableSelfCalib = False):
 
-        cdef sl.ERRCODE err = self.thisptr.get().init(mode, device, verbose,
-            vflip, disable_self_calib)
+
+        cdef sl.InitParams params
+        params.mode = mode
+        params.unit = sl.UNIT_MILLIMETERS               # TODO
+        params.coordinate = sl.COORDINATE_SYSTEM_IMAGE  # TODO
+        params.verbose = verbose
+        params.device = device
+        params.minimumDistance = -1                     # TODO
+        params.disableSelfCalib = disableSelfCalib
+        params.vflip = vflip
+
+        #cdef sl.ERRCODE err = self.thisptr.get().init(mode, device, verbose,
+        #    vflip, disable_self_calib)
+        cdef sl.ERRCODE err = self.thisptr.get().init(params)
 
         if err != sl.SUCCESS:
             raise RuntimeError('Error initializing camera: {0}'.format(errcodeToString(err)))
@@ -73,10 +87,10 @@ cdef class Camera:
         # FIXME:    For some reason, I need to grab 2 frames before actually reading
         #           frames from the SVO video in order to properly position SVOPosition
         #           at zero
-        if self.fileMode:
-            for _ in range(2):
-                self.grab()
-                self.SVOPosition = 0
+        #if self.fileMode:
+        #    for _ in range(2):
+        #        self.grab()
+        #        self.SVOPosition = 0
 
 
     def grab(self, sl.SENSING_MODE mode = sl.SENSING_MODE_RAW,

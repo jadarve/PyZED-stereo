@@ -1,3 +1,5 @@
+
+from libcpp cimport bool
 from libcpp.string cimport string
 
 
@@ -62,7 +64,7 @@ cdef extern from 'zed/utils/GlobalDefine.hpp' namespace 'sl::zed':
         QUALITY
 
 
-    cdef enum VIEW_MODE:
+    ctypedef enum VIEW_MODE:
         STEREO_LEFT
         STEREO_RIGHT
         STEREO_ANAGLYPH
@@ -74,7 +76,7 @@ cdef extern from 'zed/utils/GlobalDefine.hpp' namespace 'sl::zed':
         LAST_VIEW_MODE
 
     
-    cdef enum SIDE:
+    ctypedef enum SIDE:
         LEFT
         RIGHT
         LEFT_GREY
@@ -82,12 +84,13 @@ cdef extern from 'zed/utils/GlobalDefine.hpp' namespace 'sl::zed':
         LAST_SIDE
         
 
-    cdef enum SENSING_MODE:
-        FULL
-        RAW 
+    ctypedef enum SENSING_MODE:
+        FILL
+        STANDARD
+        LAST_SENSING_MODE 
 
         
-    cdef enum MEASURE:
+    ctypedef enum MEASURE:
         DISPARITY
         DEPTH
         CONFIDENCE
@@ -96,7 +99,7 @@ cdef extern from 'zed/utils/GlobalDefine.hpp' namespace 'sl::zed':
         LAST_MEASURE
 
 
-    cdef enum ERRCODE:
+    ctypedef enum ERRCODE:
         SUCCESS
         NO_GPU_COMPATIBLE
         NOT_ENOUGH_GPUMEM
@@ -105,17 +108,19 @@ cdef extern from 'zed/utils/GlobalDefine.hpp' namespace 'sl::zed':
         ZED_SETTINGS_FILE_NOT_AVAILABLE
         INVALID_SVO_FILE
         RECORDER_ERROR
+        INVALID_COORDINATE_SYSTEM
+        ZED_WRONG_FIRMWARE
         LAST_ERRCODE
 
 
-    cdef enum ZED_SELF_CALIBRATION_STATUS:
+    ctypedef enum ZED_SELF_CALIBRATION_STATUS:
         SELF_CALIBRATION_NOT_CALLED
         SELF_CALIBRATION_RUNNING
         SELF_CALIBRATION_FAILED
         SELF_CALIBRATION_SUCCESS
 
 
-    cdef enum ZEDResolution_mode:
+    ctypedef enum ZEDResolution_mode:
         HD2K
         HD1080
         HD720
@@ -141,7 +146,7 @@ cdef extern from 'zed/utils/GlobalDefine.hpp' namespace 'sl::zed':
     #}();
 
 
-    cdef enum ZEDCamera_settings:
+    ctypedef enum ZEDCamera_settings:
         ZED_BRIGHTNESS
         ZED_CONTRAST
         ZED_HUE
@@ -149,6 +154,34 @@ cdef extern from 'zed/utils/GlobalDefine.hpp' namespace 'sl::zed':
         ZED_GAIN
         ZED_WHITEBALANCE
         LAST_SETTINGS
+
+
+    ctypedef enum UNIT:
+        MILLIMETER
+        METER
+        INCH
+        FOOT
+        LAST_UNIT
+
+
+    ctypedef enum COORDINATE_SYSTEM:
+        IMAGE = 1
+        LEFT_HANDED = 2
+        RIGHT_HANDED = 4
+        ROBOTIC = 8
+        APPLY_PATH = 16
+        LAST_COORDINATE_SYSTEM = 32
+
+
+    cdef struct InitParams:
+        MODE mode
+        UNIT unit
+        COORDINATE_SYSTEM coordinate
+        bool verbose
+        int device
+        float minimumDistance
+        bool disableSelfCalib
+        bool vflip
 
 
     inline string errcode2str(ERRCODE err)

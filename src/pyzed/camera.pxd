@@ -15,7 +15,8 @@ cdef extern from 'zed/Camera.hpp' namespace 'sl::zed':
             Camera_cpp(sl.ZEDResolution_mode zedRes_mode = sl.ZEDResolution_mode.HD720, float fps = 0.0, int zed_linux_id = 0) except +
             Camera_cpp(string zed_record_filename) except +
 
-            sl.ERRCODE init(sl.MODE quality, int device, bool verbose, bool vflip, bool disable_self_calib)
+            #sl.ERRCODE init(sl.MODE quality, int device, bool verbose, bool vflip, bool disable_self_calib)
+            sl.ERRCODE init(sl.InitParams& parameters)
 
             #bool grab(sl.SENSING_MODE dm_type = sl.SENSING_MODE.RAW, bool computeMeasure = 1, bool computeDisparity = 1, bool computeXYZ = 0)
             bool grab(sl.SENSING_MODE dm_type, bool computeMeasure, bool computeDisparity, bool computeXYZ)
