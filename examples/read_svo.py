@@ -13,8 +13,11 @@ def main():
     filepath = sys.argv[1]
     print('Reading SVO file: {0}'.format(filepath))
 
+    # Create a ZED camera from a .svo file
     cam = zcam.Camera(filepath)
-    cam.init(sl.MODE_NONE)
+
+    # choose between MODE_NONE, MODE_PERFORMANCE or MODE_QUALITY
+    cam.init(sl.MODE_QUALITY)
 
     print('Frame count: {0}'.format(cam.SVONumberOfFrames))
     print('Frame position: {0}'.format(cam.SVOPosition))
@@ -37,6 +40,9 @@ def main():
         # images from SVO file are encoded in BGR format
         img_left = cam.retrieveImage(sl.SIDE_LEFT)
         img_right = cam.retrieveImage(sl.SIDE_RIGHT)
+
+        # extract depth
+        depth = cam.retrieveMeasure(sl.MEASURE_DEPTH) / 1000.0 # convert to meters
 
         ###############################
         # DO YOUR PROCESSING HERE
